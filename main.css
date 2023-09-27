@@ -76,6 +76,7 @@ nav{
     height: 35px;
     border-radius: 15px;
     border: 2px solid white;
+    margin-top: 10px;;
 }
 .favorites-cats{
     position: absolute;
@@ -91,12 +92,12 @@ nav{
     background: white;
     box-sizing: border-box;
 }
-.favorites-cats:hover{
+.favorites-cats:hover, .active-favorites-cats{
     border: none;
 }
-.favorites-cats:hover i{
-    color: red;
-    font-size: 1.75em;
+.favorites-cats:hover i, .active-favorites-cats-icon{
+    color: red !important;
+    font-size: 1.75em !important;
 }
 .favorites-cats i{
     color: #bfbebe;
@@ -140,4 +141,24 @@ nav{
 @keyframes warning {
     from {margin: 0px 0px 0px 100%;}
     to {margin: 0px 0px 0px -200%;}
+}
+nav{
+    display: flex;
+    justify-content: space-evenly;
+    background: #252323;
+    border-bottom: 2px solid white;
+}
+nav div{
+    display: flex;
+    align-items: center;
+}
+nav div p{
+    color: white;
+}
+nav div:hover{
+    background-color: white;
+}
+nav div:hover p{
+    color: black;
+    font-weight: bold;
 }
