@@ -1,7 +1,7 @@
 const URL = "https://api.thecatapi.com/v1/images/search";
 const API_Key = "live_aD81OlUwOrxOFyT4Pjjtcjmxe4pgty3jxEcZeoAQFoYp7ijqFGr8pMOyBc9ba0qR";
 
-let amount = 100;
+let amount = 20;
 let imgArray = [];
 
 /** 
@@ -71,4 +71,27 @@ function favoriteCats(e){
         auxIconSelector.className = "fa-solid fa-heart";
     }
     
+}
+
+function changePage(e){
+    
+    let pageActive = e.getAttribute("data-active-section");
+
+    if(pageActive === "false"){
+        let sectionOn = document.getElementsByClassName("on-section");
+        let sectionOff = document.getElementsByClassName("off-section");
+
+        let sectionTurnOff = document.getElementById(sectionOn[0].id)
+        let sectionTurnOn = document.getElementById(sectionOff[0].id)
+
+        sectionTurnOff.className = "off-section";
+        sectionTurnOn.className = "on-section";
+
+        let changePageInd1 = document.getElementById("cats-section");
+        let changePageInd2 = document.getElementById("favorites-cats-section");
+
+        changePageInd1.setAttribute("data-active-section",`${changePageInd1.getAttribute("data-active-section") === "false"}`)
+        changePageInd2.setAttribute("data-active-section",`${changePageInd2.getAttribute("data-active-section") === "false"}`)
+
+    }
 }
