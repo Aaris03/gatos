@@ -1,4 +1,5 @@
-const URL = "https://api.thecatapi.com/v1/images/search";
+const URL_All_Cats = "https://api.thecatapi.com/v1/images/search";
+const URL_Favorites_Cats = "https://api.thecatapi.com/v1/favourites";
 const API_Key = "live_aD81OlUwOrxOFyT4Pjjtcjmxe4pgty3jxEcZeoAQFoYp7ijqFGr8pMOyBc9ba0qR";
 
 let amount = 20;
@@ -11,7 +12,7 @@ let imgArray = [];
  * Esta llamada funciona pasando una api key
 */
 async function call(amount){
-    const res = await fetch(`${URL}?limit=${amount}&api_key=${API_Key}`);
+    const res = await fetch(`${URL_All_Cats}?limit=${amount}&api_key=${API_Key}`);
     const data = await res.json();
 
     imgArray = [];
@@ -56,7 +57,7 @@ function reCall(){
 }
 
 function favoriteCats(e){
-    let idImgCat = e.getAttribute("id");
+    let idImgCat = e.id;
 
     let clickElement = document.getElementById(idImgCat);
     let auxIconSelector = clickElement.childNodes[0];
@@ -65,6 +66,8 @@ function favoriteCats(e){
         clickElement.setAttribute("data-favorites", "true");
         clickElement.className = "favorites-cats active-favorites-cats";
         auxIconSelector.className = "fa-solid fa-heart active-favorites-cats-icon";
+        console.log(idImgCat)
+        addFavoritesCats(idImgCat);
     }else{
         clickElement.setAttribute("data-favorites", "false");
         clickElement.className = "favorites-cats";
@@ -74,8 +77,9 @@ function favoriteCats(e){
 }
 
 function changePage(e){
-    
+
     let pageActive = e.getAttribute("data-active-section");
+    let actualPage = e.id;
 
     if(pageActive === "false"){
         let sectionOn = document.getElementsByClassName("on-section");
@@ -93,5 +97,44 @@ function changePage(e){
         changePageInd1.setAttribute("data-active-section",`${changePageInd1.getAttribute("data-active-section") === "false"}`)
         changePageInd2.setAttribute("data-active-section",`${changePageInd2.getAttribute("data-active-section") === "false"}`)
 
+        if(actualPage === "favorites-cats-section"){
+            callFavoritesCats();
+        }
+
     }
+}
+
+async function callFavoritesCats(){
+    const res = await fetch(`${URL_Favorites_Cats}`,{
+        headers:{
+            "Content-Type":"application/json",
+            "x-api-key": `${API_Key}`
+        }
+    });
+    const data = await res.json();
+
+    console.log(data);
+}
+
+async function addFavoritesCats(idCat){
+    const newFavorite = await fetch(`${URL_Favorites_Cats}`,{
+        method: "POST",
+        headers:{
+            "Content-Type":"application/json",
+          "x-api-key": `${API_Key}`
+        },  
+        body: JSON.stringify({
+            "image_id":`${idCat}`
+        })
+    });
+}
+
+async function deleteFavoritesCats(idCat){
+    const deleteFavorite = await fetch(`${URL_Favorites_Cats}/${idCat}`,{
+        method: "DELETE",
+        headers:{
+            "Content-Type":"application/json",
+            "x-api-key": `${API_Key}`
+        }
+    });
 }
