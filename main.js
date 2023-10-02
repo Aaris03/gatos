@@ -2,7 +2,7 @@ const URL_All_Cats = "https://api.thecatapi.com/v1/images/search";
 const URL_Favorites_Cats = "https://api.thecatapi.com/v1/favourites";
 const API_Key = "live_aD81OlUwOrxOFyT4Pjjtcjmxe4pgty3jxEcZeoAQFoYp7ijqFGr8pMOyBc9ba0qR";
 
-let amount = 20;
+let amount = 2;
 let imgArray = [];
 let imgArrayAll = [];
 
@@ -45,6 +45,8 @@ async function call(amount){
 
         container.appendChild(divElement);
     })
+
+    await callFavoritesCats();
 }
 
 call(amount);
@@ -65,7 +67,7 @@ function removeFavorites(){
     })
 }
 
-function favoriteCats(e){
+async function favoriteCats(e){
     let idImgCat = e.id;
 
     let clickElement = document.getElementById(idImgCat);
@@ -75,11 +77,33 @@ function favoriteCats(e){
         clickElement.setAttribute("data-favorites", "true");
         clickElement.className = "favorites-cats active-favorites-cats";
         auxIconSelector.className = "fa-solid fa-heart active-favorites-cats-icon";
-        addFavoritesCats(idImgCat);
+        await addFavoritesCats(idImgCat);
+        
+        const res = await fetch(`${URL_Favorites_Cats}`,{
+            headers:{
+                "Content-Type":"application/json",
+                "x-api-key": `${API_Key}`
+            }
+        });
+
+        const data = await res.json();
+        console.log(data)
+        console.log(imgArrayAll)
+
+        await data.forEach(element => {
+            imgArrayAll.some(item => {
+                if(item[1] == element.image_id){  
+                    item.push(element.id)
+                    clickElement.setAttribute("data-delete-id", item[2]);
+                }
+            }) 
+        })      
     }else{
         clickElement.setAttribute("data-favorites", "false");
         clickElement.className = "favorites-cats";
         auxIconSelector.className = "fa-solid fa-heart";
+        console.log(e)
+        deleteFavoritesCats(this, false,e.getAttribute("data-delete-id"))
     }
     
 }
@@ -106,9 +130,8 @@ function changePage(e){
         changePageInd2.setAttribute("data-active-section",`${changePageInd2.getAttribute("data-active-section") === "false"}`)
 
         if(actualPage === "favorites-cats-section"){
+            removeFavorites();
             callFavoritesCats();
-        }else{
-            removeFavorites()
         }
 
     }
@@ -136,7 +159,7 @@ async function callFavoritesCats(){
         divElement.appendChild(img).setAttribute("src",element.image.url);
         divElement.appendChild(divInputDelete);
         divInputDelete.setAttribute("id", element.id);
-        divInputDelete.setAttribute("onclick", "deleteFavoritesCats(this)");
+        divInputDelete.setAttribute("onclick", "deleteFavoritesCats(this,true)");
         divInputDelete.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
 
         container.appendChild(divElement);
@@ -148,18 +171,27 @@ async function addFavoritesCats(idCat){
         method: "POST",
         headers:{
             "Content-Type":"application/json",
-          "x-api-key": `${API_Key}`
+            "x-api-key": `${API_Key}`
         },  
         body: JSON.stringify({
             "image_id":`${idCat}`
         })
     });
+
+
 }
 
-async function deleteFavoritesCats(e){
-    let removeElement = e.parentNode;
-    let idElement = e.id;
-    removeElement.remove();
+async function deleteFavoritesCats(e, condition, idDelFav){
+    
+    let idElement;
+    
+    if(condition){
+        let removeElement = e.parentNode;
+        idElement = e.id;
+        removeElement.remove();
+    }else{
+        idElement = idDelFav;
+    }
 
     const deleteFavorite = await fetch(`${URL_Favorites_Cats}/${idElement}`,{
         method: "DELETE",
