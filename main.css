@@ -75,12 +75,11 @@ nav{
     flex-wrap: wrap;
     height: 80vh;
     overflow: scroll;
-    width: 80%;
+    width: 100%;
     align-self: center;
     overflow-x: auto;
     justify-content: space-around;
     box-sizing: border-box;
-    border: 2px solid white;
     border-radius: 9px;
     position: relative;
 }
@@ -225,7 +224,7 @@ nav{
 nav{
     display: flex;
     justify-content: space-evenly;
-    background: #252323;
+    background: black;
     border-bottom: 2px solid white;
 }
 nav div{
