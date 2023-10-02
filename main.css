@@ -1,6 +1,6 @@
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-    .imgContainer{
+    .imgContainer, .imgContainerFav{
         width: 90%;
         height: 300px;
         margin: 10px 5px;
@@ -10,7 +10,7 @@
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-    .imgContainer{
+    .imgContainer, .imgContainerFav{
         width: 90%;
         height: 300px;
         margin: 10px 5px;
@@ -20,7 +20,7 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-    .imgContainer{
+    .imgContainer, .imgContainerFav{
         width: 45%;
         height: 300px;
         margin: 10px 5px;
@@ -30,7 +30,7 @@
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-    .imgContainer{
+    .imgContainer, .imgContainerFav{
         width: 30%;
         height: 300px;
         margin: 5px;
@@ -40,7 +40,7 @@
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-    .imgContainer{
+    .imgContainer, .imgContainerFav{
         width: 30%;
         height: 300px;
         margin: 5px;
@@ -84,34 +84,65 @@ nav{
     border-radius: 9px;
     position: relative;
 }
+#container-favorites{
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    justify-content: center;
+    overflow-x: auto;
+    width: 100%;
+}
+.delete-Cat{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    background: white;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    opacity: 25%;
+}
+.delete-Cat i{
+    font-size: 1.5em;
+    color: gray;
+}
+.delete-Cat:hover{
+    opacity: 100%;
+}
+.delete-Cat:hover i{
+    color: black;
+}
 #ident-card-1{
     position: absolute;
     height: 10px;
     background-color: white;
 }
-#container::-webkit-scrollbar {
+#container::-webkit-scrollbar , #container-favorites::-webkit-scrollbar {
     -webkit-appearance: none;
 }
-#container::-webkit-scrollbar:vertical {
+#container::-webkit-scrollbar:vertical, #container-favorites::-webkit-scrollbar:vertical  {
     width:10px;
 }
 
-#container::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+#container::-webkit-scrollbar-button:increment, #container-favorites::-webkit-scrollbar-button:increment{
     display: none;
 } 
-#container::-webkit-scrollbar:horizontal {
+#container::-webkit-scrollbar:horizontal, #container-favorites::-webkit-scrollbar:horizontal {
     height: 10px;
 }
-#container::-webkit-scrollbar-thumb {
+#container::-webkit-scrollbar-thumb, #container-favorites::-webkit-scrollbar-thumb {
     border-radius: 20px;
     border: 2px solid #f1f2f3;
 }
 
-#container::-webkit-scrollbar-track {
+#container::-webkit-scrollbar-track, #container-favorites::-webkit-scrollbar-track {
     border-radius: 10px;  
 }
 
-.imgContainer img{
+.imgContainer img, .imgContainerFav img{
     width: 100%;
     height: 300px;
     object-fit: cover;

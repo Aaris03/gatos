@@ -4,6 +4,7 @@ const API_Key = "live_aD81OlUwOrxOFyT4Pjjtcjmxe4pgty3jxEcZeoAQFoYp7ijqFGr8pMOyBc
 
 let amount = 20;
 let imgArray = [];
+let imgArrayAll = [];
 
 /** 
  * Llamada al API
@@ -22,6 +23,7 @@ async function call(amount){
         auxArray.push(data[i].url);
         auxArray.push(data[i].id);
         imgArray.push(auxArray);
+        imgArrayAll.push(auxArray);
         auxArray = [];
     }
 
@@ -55,6 +57,13 @@ function reCall(){
     })
     call(amount);
 }
+function removeFavorites(){
+    let container = document.getElementById("container-favorites");
+    let removeElements = document.querySelectorAll("div.imgContainerFav");
+    removeElements.forEach(element => {
+        container.removeChild(element);
+    })
+}
 
 function favoriteCats(e){
     let idImgCat = e.id;
@@ -66,7 +75,6 @@ function favoriteCats(e){
         clickElement.setAttribute("data-favorites", "true");
         clickElement.className = "favorites-cats active-favorites-cats";
         auxIconSelector.className = "fa-solid fa-heart active-favorites-cats-icon";
-        console.log(idImgCat)
         addFavoritesCats(idImgCat);
     }else{
         clickElement.setAttribute("data-favorites", "false");
@@ -99,6 +107,8 @@ function changePage(e){
 
         if(actualPage === "favorites-cats-section"){
             callFavoritesCats();
+        }else{
+            removeFavorites()
         }
 
     }
@@ -113,7 +123,24 @@ async function callFavoritesCats(){
     });
     const data = await res.json();
 
-    console.log(data);
+    data.forEach(element => {
+        
+        let divElement = document.createElement("div");
+        let divInputDelete = document.createElement("div");
+        divElement.className = "imgContainerFav";
+        divInputDelete.className = "delete-Cat";
+
+        let img = document.createElement("img");
+        let container = document.getElementById("container-favorites");
+
+        divElement.appendChild(img).setAttribute("src",element.image.url);
+        divElement.appendChild(divInputDelete);
+        divInputDelete.setAttribute("id", element.id);
+        divInputDelete.setAttribute("onclick", "deleteFavoritesCats(this)");
+        divInputDelete.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+
+        container.appendChild(divElement);
+    })
 }
 
 async function addFavoritesCats(idCat){
@@ -129,12 +156,16 @@ async function addFavoritesCats(idCat){
     });
 }
 
-async function deleteFavoritesCats(idCat){
-    const deleteFavorite = await fetch(`${URL_Favorites_Cats}/${idCat}`,{
+async function deleteFavoritesCats(e){
+    let removeElement = e.parentNode;
+    let idElement = e.id;
+    removeElement.remove();
+
+    const deleteFavorite = await fetch(`${URL_Favorites_Cats}/${idElement}`,{
         method: "DELETE",
         headers:{
             "Content-Type":"application/json",
             "x-api-key": `${API_Key}`
         }
-    });
+    });  
 }
