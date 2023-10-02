@@ -2,7 +2,7 @@ const URL_All_Cats = "https://api.thecatapi.com/v1/images/search";
 const URL_Favorites_Cats = "https://api.thecatapi.com/v1/favourites";
 const API_Key = "live_aD81OlUwOrxOFyT4Pjjtcjmxe4pgty3jxEcZeoAQFoYp7ijqFGr8pMOyBc9ba0qR";
 
-let amount = 2;
+let amount = 30;
 let imgArray = [];
 let imgArrayAll = [];
 
